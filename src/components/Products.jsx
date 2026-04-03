@@ -61,7 +61,18 @@ const Products = () => {
 			field: "title",
 			headerName: "Product",
 			flex: 1,
-			minWidth: isMobile ? 120 : 150,
+			minWidth: isMobile ? 150 : 200,
+			renderCell: (params) => (
+				<div
+					style={{
+						whiteSpace: "normal",
+						wordBreak: "break-word",
+						lineHeight: 1.2,
+					}}
+				>
+					{params.value}
+				</div>
+			),
 		},
 		{
 			field: "price",
