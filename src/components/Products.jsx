@@ -1,7 +1,5 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useEffect } from "react";
 import Loader from "./Loader";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -14,84 +12,84 @@ const Products = () => {
 	const [search, setSearch] = useState("");
 	const [sort, setSort] = useState("none");
 
-	async function fetchProducts(params) {
-		try {
-			const res = await axios.get("https://dummyjson.com/products");
-			setProducts(res.data.products);
-		} catch (err) {
-			setError("Failed to fetch Data");
-		} finally {
-			setLoading(false);
-		}
-	}
 	useEffect(() => {
+		async function fetchProducts() {
+			try {
+				const res = await axios.get("https://dummyjson.com/products");
+				setProducts(res.data.products);
+			} catch (err) {
+				setError("Failed to fetch Data");
+			} finally {
+				setLoading(false);
+			}
+		}
 		fetchProducts();
 	}, []);
 
-	const categories = ["all", ...new Set(products.map((ele) => ele.category))];
+	const isMobile = window.innerWidth <= 768;
+	const categories = ["all", ...new Set(products.map((p) => p.category))];
 
 	let filteredProducts = products.filter(
-		(ele) =>
-			ele.title.toLowerCase().includes(search.toLowerCase()) &&
-			(category === "all" ? true : ele.category === category),
+		(p) =>
+			p.title.toLowerCase().includes(search.toLowerCase()) &&
+			(category === "all" ? true : p.category === category),
 	);
-
 	filteredProducts = [...filteredProducts];
 
-	if (sort === "low") {
-		filteredProducts.sort((a, b) => a.price - b.price);
-	} else if (sort === "high") {
-		filteredProducts.sort((a, b) => b.price - a.price);
-	}
+	if (sort === "low") filteredProducts.sort((a, b) => a.price - b.price);
+	else if (sort === "high") filteredProducts.sort((a, b) => b.price - a.price);
 
 	const columns = [
 		{
 			field: "thumbnail",
 			headerName: "Image",
-			flex: 0.8,
+			width: isMobile ? 70 : 150,
 			renderCell: (params) => (
 				<img
 					src={params.row.thumbnail}
 					alt={params.row.title}
 					style={{
-						width: "100%",
-						height: "auto",
-						borderRadius: 8,
+						width: isMobile ? 50 : "100%",
+						height: isMobile ? 50 : 100,
+						borderRadius: 6,
 						objectFit: "cover",
-						boxShadow: "2px 2px 10px gray",
 					}}
 				/>
 			),
 		},
 		{
 			field: "title",
-			headerName: "Product Name",
+			headerName: "Product",
 			flex: 1,
+			minWidth: isMobile ? 120 : 150,
 		},
 		{
 			field: "price",
 			headerName: "Price",
-			flex: 0.5,
+			width: isMobile ? 80 : 100,
 			renderCell: (params) => <b>${params.row.price}</b>,
 		},
 		{
 			field: "category",
 			headerName: "Category",
-			flex: 0.7,
+			width: isMobile ? 100 : 150,
 		},
 		{
 			field: "action",
 			headerName: "",
-			flex: 0.7,
+			width: isMobile ? 100 : 150,
 			renderCell: (params) => (
-				<Link to={`/product/${params.row.id}`} style={{ padding: "10px" }}>
-					More Details
+				<Link
+					style={{ fontSize: isMobile ? 12 : 14 }}
+					to={`/product/${params.row.id}`}
+				>
+					Details
 				</Link>
 			),
 		},
 	];
-	if (loading) return <Loader></Loader>;
 
+	if (loading) return <Loader />;
 	if (error) return <h2>{error}</h2>;
 
 	return (
@@ -105,8 +103,8 @@ const Products = () => {
 				/>
 				<label>Category:</label>
 				<select value={category} onChange={(e) => setCategory(e.target.value)}>
-					{categories.map((ele, ind) => (
-						<option key={ind} value={ele}>
+					{categories.map((ele, i) => (
+						<option key={i} value={ele}>
 							{ele}
 						</option>
 					))}
@@ -114,29 +112,28 @@ const Products = () => {
 				<label>Price:</label>
 				<select value={sort} onChange={(e) => setSort(e.target.value)}>
 					<option value="none">None</option>
-					<option value="low">Price: Low to High</option>
-					<option value="high">Price: High to Low</option>
+					<option value="low">Low to High</option>
+					<option value="high">High to Low</option>
 				</select>
 			</div>
 
-			<DataGrid
-				rows={filteredProducts}
-				columns={columns}
-				pagination
-				pageSizeOptions={[5, 10]}
-				autoHeight
-				rowHeight={280}
-				initialState={{
-					pagination: {
-						paginationModel: {
-							page: 0,
-							pageSize: 5,
+			<div style={{ overflowX: "auto" }}>
+				<DataGrid
+					rows={filteredProducts}
+					columns={columns}
+					pagination
+					pageSizeOptions={[5, 10]}
+					autoHeight
+					rowHeight={isMobile ? 120 : 280}
+					initialState={{
+						pagination: {
+							paginationModel: { page: 0, pageSize: 5 },
 						},
-					},
-				}}
-			/>
+					}}
+				/>
+			</div>
 		</div>
 	);
-}
+};
 
 export default Products;
