@@ -1,0 +1,154 @@
+.product-container {
+	max-width: 900px;
+	margin: 40px auto;
+	padding: 20px;
+	display: flex;
+	gap: 30px;
+	align-items: flex-start;
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+	width: 300px;
+	height: 300px;
+	object-fit: cover;
+	border-radius: 8px;
+}
+
+.product-details {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.product-title {
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+
+.product-desc {
+	color: #555;
+	margin-bottom: 15px;
+	text-align: left;
+}
+
+.product-price {
+	font-size: 20px;
+	font-weight: bold;
+	color: #307934;
+	margin-bottom: 10px;
+}
+
+.product-info {
+	font-size: 14px;
+	color: #444;
+	margin-bottom: 6px;
+}
+
+.back-button {
+	margin-top: 15px;
+	padding: 8px 16px;
+	border: none;
+	background: #1976d2;
+	color: white;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.back-btn:hover {
+	background: #125ea2;
+}
+
+.products-container {
+	padding: 20px;
+	background: #f5f6fa;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+.filters {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 15px;
+	background: #fff;
+	padding: 10px 15px;
+	border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.filters input,
+.filters select {
+	padding: 6px 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	outline: none;
+	font-size: 14px;
+}
+
+.filters input:focus,
+.filters select:focus {
+	border-color: #1976d2;
+}
+
+.filters label {
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.MuiDataGrid-root {
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	border: none;
+}
+
+.MuiDataGrid-columnHeaders {
+	background: #f0f2f5;
+	font-weight: 600;
+}
+
+.MuiDataGrid-row:hover {
+	background: #f9fafc;
+}
+
+.MuiDataGrid-cell {
+	display: flex;
+	align-items: center;
+}
+
+.MuiDataGrid-cell img {
+	border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+	.product-container {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.product-image {
+		width: 100%;
+		height: auto;
+	}
+	.filters {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	.filters input {
+		width: 80%;
+	}
+	.filters select {
+		width: 84%;
+	}
+	.MuiDataGrid-root .MuiDataGrid-row {
+		min-height: 180px !important;
+	}
+	.products-container {
+		overflow-x: auto;
+	}
+}
